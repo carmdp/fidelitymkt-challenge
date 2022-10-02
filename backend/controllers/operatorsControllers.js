@@ -3,8 +3,6 @@ const operator = require('../models/operatorsModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');      // Añadimos dotenv para utilizar las variables de entorno
-const KEY_PRIVATE = "mkt2022fidellity"
-
 
 
 //Funcion que valida el inicio de sesion
@@ -12,7 +10,10 @@ async function ValidateLogIn(req, res){
     
     // Obtenemos datos enviados  
     const { userName, password } = req.body;      
-   
+    
+    // Cargamos nuestras variables de entorno
+    dotenv.config();
+
     try {
       
         //Verificamos que exista el usuario
@@ -23,11 +24,10 @@ async function ValidateLogIn(req, res){
         const hashDB = await GetHash(userName);
        
         //Comparamos password con hash almacenado en DB
-        if (await bcrypt.compare(password+KEY_PRIVATE, hashDB)) {  
+        if (await bcrypt.compare(password+process.env.KEY_PRIVATE, hashDB)) {  
            
             
-            // Cargamos nuestras variables de entorno
-            dotenv.config();
+           
             
             //Actualizamos fecha de ultima sesion
             UpdateLastLogin(userName);
@@ -68,11 +68,11 @@ async function SetOperator(req,res){
     
     const { name, surname, userName, password, status } = req.body;   
      
-    const newPassHash = await bcrypt.hash(password+KEY_PRIVATE,10); 
+    const newPassHash = await bcrypt.hash(password+process.env.KEY_PRIVATE,10); 
   
     return  operator.create ({
                 name: name,
-                surName: surname,
+                surname: surname,
                 userName: userName,
                 password: newPassHash,
                 status: status.length > 0 ? true : false,
@@ -114,7 +114,7 @@ async function PutOperator(req, res){
     
     return  operator.update ({
                 name: name,
-                surName: surname,
+                surname: surname,
                 status: status,
             },{where:{id:id}})
             .then(operator => res.status(200).send(""))

@@ -26,7 +26,7 @@ const TableOperators = ({operators, handleClick}) => {
                             <tr key={key}>
                                 <td><b>{operator.userName}</b></td>
                                 <td>{operator.name}</td>
-                                <td>{operator.surName}</td>
+                                <td>{operator.surname}</td>
                                 <td>{(operator.status) ? 'Activo' : 'Inactivo' }</td>
                                 <td>{DateConvert(operator.lastLoginDate)}</td>
                                 <td>
