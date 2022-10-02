@@ -1,5 +1,4 @@
 ## Challenge - FIDELITY TECHNOLOGY 2022
----
 
 #### **_Objetivo:_**
 
@@ -48,5 +47,4 @@ El campo lastLoginDate se completará al momento de que un operador realiza un l
 exitoso.
 
 > **_IMPORTANTE:_** 
->
->Tener en cuenta cuáles serían las medidas de seguridad podría utiliza
+>Tener en cuenta cuáles serían las medidas de seguridad podría utilizar.
