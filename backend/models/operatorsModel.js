@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const {db,DataTypes} = require('../config/connection');
 
 const tableName = "challenges_crud";
+
 const operator = db.sequelize.define(tableName, {
     name: DataTypes.STRING,
     surname: DataTypes.STRING,
@@ -17,7 +18,7 @@ const operator = db.sequelize.define(tableName, {
  });
 
 
-
+//Create database + add row user default
  operator.sync().then(async() => { 
     return operator.bulkCreate([
       {  

@@ -4,52 +4,61 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');      // Añadimos dotenv para utilizar las variables de entorno
 
-
-//Funcion que valida el inicio de sesion
+/**
+ * Validate login session
+ * @param {Object} req 
+ * @param {Object} res 
+ * @returns 
+ */
 async function ValidateLogIn(req, res){
     
-    // Obtenemos datos enviados  
+    // Get data  
     const { userName, password } = req.body;      
     
-    // Cargamos nuestras variables de entorno
+    // Loading enviroment variable
     dotenv.config();
 
     try {
       
-        //Verificamos que exista el usuario
+        //Check if user exists in database
         if ( !(await ValidateUser(userName)))
             throw new Error('');
       
-        // Solicitamos hash de usuario a la DB
+        // Get user hash in DB
         const hashDB = await GetHash(userName);
        
-        //Comparamos password con hash almacenado en DB
+        //Compare password with hash stored in DB
         if (await bcrypt.compare(password+process.env.KEY_PRIVATE, hashDB)) {  
            
             
            
             
-            //Actualizamos fecha de ultima sesion
+            //Update date of last session
             UpdateLastLogin(userName);
 
-            // Generamos token de authentificacion
+            // Generate token for authentication
             const token = jwt.sign( { user:userName }, process.env.API_KEY, { expiresIn: process.env.TOKEN_EXPIRES_IN } );
 
-            // Regresamos el token para verificar que el usuario ha iniciado sesión correctamente
+            // Return token with verification successfully completed
             return res.status(200).send({user:userName, token:token});
                        
         }else{
-            //Retornamos acceso no autorizado   
+            //Return error 401 - access not authorized 
             return res.status(401).send();
         }
         
     }catch(error){
-        // Error a la peticion del cliente
+        // Return error 400 - Bad request
         return res.status(400).send(error);
     }
 }
 
-//Funcion que retorna el listados de todos los operadores
+/**
+ * Get list all operators
+ * @param {Object} req 
+ * @param {Object} res 
+ * @returns 
+ */
 async function GetListOperators(req, res){
     const currentPage = parseInt(req.body.currentPage);
     const limit = parseInt(req.body.limit);
@@ -62,7 +71,12 @@ async function GetListOperators(req, res){
     
 }
 
-//Funcion que agrega un nuevo operador
+/**
+ * Add operator
+ * @param {Object} req 
+ * @param {Object} res 
+ * @returns 
+ */
 async function SetOperator(req,res){
     // Obtenemos datos enviados  
     
@@ -90,7 +104,12 @@ async function SetOperator(req,res){
 
 } 
 
-//Funcion que valida el inicio de sesion
+/**
+ * Get data by operator
+ * @param {Object} req 
+ * @param {Object} res 
+ * @returns Object
+ */
 async function GetOperator(req, res){
     
     const id = req.params.id;
@@ -106,7 +125,12 @@ async function GetOperator(req, res){
     
 }
 
-//Funcion que valida el inicio de sesion
+/**
+ * Update data operator
+ * @param {Object} req 
+ * @param {Object} res 
+ * @returns Object
+ */
 async function PutOperator(req, res){
     
     // Obtenemos datos enviados   
@@ -119,13 +143,18 @@ async function PutOperator(req, res){
             },{where:{id:id}})
             .then(operator => res.status(200).send(""))
             .catch(error => res.status(400).send(error))
-    }
+
+}
 
 
-//Comprobamos si el usuario existe en la base de datos
-async function ValidateUser(value){
+/**
+ * Check if user exists in database
+ * @param {String} user | Name user
+ * @returns Boolean
+ */
+async function ValidateUser(user){
     
-    const user = await operator.findOne({ where:{userName: value, status: 1} });
+    const user = await operator.findOne({ where:{userName: user, status: 1} });
    
     if (user === null) 
         return false;
@@ -134,19 +163,27 @@ async function ValidateUser(value){
 
 }
 
-//Traemos hash almacenado en la base de datos
-async function GetHash(value){
+/**
+ * Get user hash in db.
+ * @param {String} user | Name user   
+ * @returns Object
+ */
+async function GetHash(user){
     
     const hash = await operator.findOne({
         attributes: ['password'], 
-        where: { userName: value } 
+        where: { userName: user } 
     });
     
     return hash.dataValues.password;
 
 }
 
-//Actulizamos campo lastLoginDate de la base de datos 
+/**
+ * Update session login 
+ * @param {String} user 
+ * @returns Object
+ */
 async function UpdateLastLogin(user){
     
     return await operator.update({
@@ -160,11 +197,10 @@ async function UpdateLastLogin(user){
 
 
 module.exports = {
-    ValidateLogIn,
-    GetListOperators,
-    SetOperator,
-    GetOperator,
-    PutOperator
-    
+    ValidateLogIn,          //Validate login session
+    GetListOperators,       //List all operators
+    SetOperator,            //Add operator 
+    GetOperator,            //Get data by operator
+    PutOperator             //Update data operator
     
 }

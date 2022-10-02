@@ -1,5 +1,4 @@
 var express = require('express');
-const verifyToken = require('../middleware/validateTokens');
 const operatorsController = require('../controllers/operatorsControllers');
 
 var router = express.Router();
