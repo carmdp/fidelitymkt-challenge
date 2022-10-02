@@ -154,9 +154,9 @@ async function PutOperator(req, res){
  */
 async function ValidateUser(user){
     
-    const user = await operator.findOne({ where:{userName: user, status: 1} });
+    const getUser = await operator.findOne({ where:{userName: user, status: 1} });
    
-    if (user === null) 
+    if (getUser === null) 
         return false;
 
     return true;
