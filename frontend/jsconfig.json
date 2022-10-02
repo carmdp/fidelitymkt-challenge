@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+      "baseUrl": "src",
+      "paths": {
+        "components": ["src/components"],
+        "controller": ["src/controllers"],
+        "context": ["src/context"],
+        "config":["src/config"],
+        "css":["src/assets/css"]
+      }
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+}

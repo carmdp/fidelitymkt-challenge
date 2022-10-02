@@ -1,0 +1,51 @@
+
+html {height: 100%;}
+body,#wrapper { min-height: 100vh; }
+
+html,body, #root, ul { 
+    margin: 0;
+    padding: 0;
+}
+
+
+#wrapper{
+    margin: 50px 0px;
+    width: 100%;
+}
+
+footer {
+
+    width: 100%;
+}
+
+/* ########  RESPONSIVE ######*/
+ 
+/* ###########   Móviles en vertical ######### */
+@media (min-width: 360px) {
+
+}
+ /* ########### Moviles en horizontal ########### */
+@media (min-width: 480px) { 
+
+
+
+}
+/* ########### Moviles en horizontal ########### */
+@media (min-width: 640px) { 
+
+}
+ 
+/* ######## Tabletas vertical ########### */
+@media (min-width: 768px) {
+  
+
+ }
+ /* ######## Tabletas horizontales ########### */
+@media (min-width: 1024px) {
+ 
+}
+ /* ######## Tablets y Desktops horizontales ########### */
+@media (min-width: 1200px) {
+   
+}
+ 
